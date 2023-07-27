@@ -1,5 +1,16 @@
+"use client"
+import Head from 'next/head'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { classNames, DomHandler } from 'primereact/utils';
+import { LayoutContext, LayoutProvider } from './contexts/layoutcontext';
+import { useContext } from 'react';
+import MainLayout from './components/MainLayout';
+import 'primereact/resources/primereact.css';
+import 'primeflex/primeflex.css';
+import 'primeicons/primeicons.css';
+import '../styles/layout/layout.scss';
+import '../styles/demo/Demos.scss';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -9,9 +20,27 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <Head>
+        <title>TKI Admin Panel</title>
+        <meta charSet="UTF-8" />
+        <meta name="description" content="The ultimate collection of design-agnostic, flexible and accessible React UI Components." />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta property="og:type" content="website"></meta>
+        <meta property="og:title" content="Sakai by PrimeReact | Free Admin Template for NextJS"></meta>
+        <meta property="og:url" content="https://www.primefaces.org/sakai-react"></meta>
+        <meta property="og:description" content="The ultimate collection of design-agnostic, flexible and accessible React UI Components." />
+        <meta property="og:image" content="https://www.primefaces.org/static/social/sakai-nextjs.png"></meta>
+        <meta property="og:ttl" content="604800"></meta>
+        <link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
+      </Head>
+      <LayoutProvider>
+        <MainLayout></MainLayout>
+      </LayoutProvider>
     </html>
   )
 }
