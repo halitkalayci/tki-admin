@@ -1,10 +1,15 @@
-"use client";
 import {LayoutContext} from "@/app/contexts/LayoutContext";
 import Link from "next/link";
+import Router, {useRouter} from "next/navigation";
 import {classNames} from "primereact/utils";
-import React, {useContext, useImperativeHandle, useRef} from "react";
+import React, {
+	forwardRef,
+	useContext,
+	useImperativeHandle,
+	useRef,
+} from "react";
 
-function AppTopBar(props, ref) {
+const AppTopbar = forwardRef((props, ref) => {
 	const {layoutConfig, layoutState, onMenuToggle, showProfileSidebar} =
 		useContext(LayoutContext);
 	const menubuttonRef = useRef(null);
@@ -21,13 +26,15 @@ function AppTopBar(props, ref) {
 		<div className="layout-topbar">
 			<Link href="/" className="layout-topbar-logo">
 				<img
-					src={`logo.svg`}
+					src={`/layout/images/logo-${
+						layoutConfig.colorScheme !== "light" ? "white" : "dark"
+					}.svg`}
 					width="47.22px"
-					height={"60px"}
+					height={"35px"}
 					widt={"true"}
 					alt="logo"
 				/>
-				<span>TKI</span>
+				<span>SAKAI</span>
 			</Link>
 
 			<button
@@ -55,7 +62,7 @@ function AppTopBar(props, ref) {
 				})}
 			>
 				<button type="button" className="p-link layout-topbar-button">
-					<i className="pi pi-sign-in"></i>
+					<i className="pi pi-calendar"></i>
 					<span>Calendar</span>
 				</button>
 				<button type="button" className="p-link layout-topbar-button">
@@ -71,6 +78,6 @@ function AppTopBar(props, ref) {
 			</div>
 		</div>
 	);
-}
+});
 
-export default AppTopBar;
+export default AppTopbar;

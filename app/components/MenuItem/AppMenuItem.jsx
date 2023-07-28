@@ -27,10 +27,10 @@ const AppMenuitem = props => {
 			}
 		};
 
-		router.events.on("routeChangeComplete", onRouteChange);
+		// router.events.on("routeChangeComplete", onRouteChange);
 
 		return () => {
-			router.events.off("routeChangeComplete", onRouteChange);
+			// router.events.off("routeChangeComplete", onRouteChange);
 		};
 	}, []);
 
