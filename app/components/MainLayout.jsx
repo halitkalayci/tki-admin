@@ -1,5 +1,5 @@
 import Head from "next/head";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {
 	useEventListener,
 	useMountEffect,
@@ -14,7 +14,8 @@ import AppTopBar from "./TopBar/AppTopBar";
 import {LayoutContext} from "../contexts/LayoutContext";
 
 const Layout = props => {
-	const {layoutConfig, layoutState, setLayoutState} = useContext(LayoutContext);
+	const {setShowLayout, showLayout, layoutConfig, layoutState, setLayoutState} =
+		useContext(LayoutContext);
 	const topbarRef = useRef(null);
 	const sidebarRef = useRef(null);
 
@@ -81,7 +82,16 @@ const Layout = props => {
 	const unblockBodyScroll = () => {
 		DomHandler.removeClass("blocked-scroll");
 	};
+	const layoutlessUrls = ["/login", "/register"];
+	const usePathName = usePathname();
 
+	useEffect(() => {
+		if (layoutlessUrls.includes(usePathName)) {
+			setShowLayout(false);
+		} else {
+			setShowLayout(true);
+		}
+	}, [showLayout]);
 	useMountEffect(() => {
 		PrimeReact.ripple = true;
 	});
@@ -154,13 +164,22 @@ const Layout = props => {
 				></meta>
 				<meta property="og:ttl" content="604800"></meta>
 				<link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
+				<link
+					id="theme-css"
+					href={`/public/themes/lara-light-blue/theme.css`}
+					rel="stylesheet"
+				></link>
 			</Head>
 			<AuthProvider>
 				<div className={containerClass}>
-					<AppTopBar ref={topbarRef} />
-					<div ref={sidebarRef} className="layout-sidebar">
-						<AppSidebar />
-					</div>
+					{showLayout && (
+						<>
+							<AppTopBar ref={topbarRef} />
+							<div ref={sidebarRef} className="layout-sidebar">
+								<AppSidebar />
+							</div>
+						</>
+					)}
 					<div className="layout-main-container">
 						<div className="layout-main">{props.children}</div>
 						{/* <AppFooter /> */}

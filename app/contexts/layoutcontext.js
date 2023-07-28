@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 export const LayoutContext = React.createContext();
 
 export const LayoutProvider = (props) => {
+
+    const [showLayout, setShowLayout] = useState(true);
+
     const [layoutConfig, setLayoutConfig] = useState({
         ripple: false,
         inputStyle: 'outlined',
@@ -52,7 +55,9 @@ export const LayoutProvider = (props) => {
         layoutState,
         setLayoutState,
         onMenuToggle,
-        showProfileSidebar
+        showProfileSidebar,
+        showLayout,
+        setShowLayout
     };
 
     return <LayoutContext.Provider value={value}>{props.children}</LayoutContext.Provider>;
