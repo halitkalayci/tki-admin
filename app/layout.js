@@ -40,13 +40,11 @@ export default function RootLayout({ children }) {
         <meta property="og:ttl" content="604800"></meta>
         <link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
       </Head>
-      <LayoutProvider>
-        <MenuProvider>
-          <AuthProvider>
-            <MainLayout></MainLayout>
-          </AuthProvider>
-        </MenuProvider>
-      </LayoutProvider>
+      <body>
+        <LayoutProvider>
+          <MainLayout></MainLayout>
+        </LayoutProvider>
+      </body>
     </html>
   )
 }

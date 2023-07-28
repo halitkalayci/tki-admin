@@ -6,6 +6,7 @@ import {LayoutContext} from "@/app/contexts/LayoutContext";
 import {AuthContext} from "@/app/contexts/AuthContext";
 import {MenuProvider} from "@/app/contexts/MenuContext";
 import AppMenuitem from "../MenuItem/AppMenuItem";
+import {NavbarTypes} from "@/app/constants/navbarTypes";
 
 const AppMenu = () => {
 	const {layoutConfig} = useContext(LayoutContext);
@@ -18,7 +19,7 @@ const AppMenu = () => {
 		},
 	]);
 	useEffect(() => {
-		fetchMenuItems();
+		//fetchMenuItems();
 	}, []);
 
 	const fetchMenuItems = () => {
