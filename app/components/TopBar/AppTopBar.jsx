@@ -1,5 +1,5 @@
 "use client";
-import {LayoutContext} from "@/app/contexts/layoutcontext";
+import {LayoutContext} from "@/app/contexts/LayoutContext";
 import Link from "next/link";
 import {classNames} from "primereact/utils";
 import React, {useContext, useImperativeHandle, useRef} from "react";
@@ -21,15 +21,13 @@ function AppTopBar(props, ref) {
 		<div className="layout-topbar">
 			<Link href="/" className="layout-topbar-logo">
 				<img
-					src={`/layout/images/logo-${
-						layoutConfig.colorScheme !== "light" ? "white" : "dark"
-					}.svg`}
+					src={`logo.svg`}
 					width="47.22px"
-					height={"35px"}
+					height={"60px"}
 					widt={"true"}
 					alt="logo"
 				/>
-				<span>SAKAI</span>
+				<span>TKI</span>
 			</Link>
 
 			<button

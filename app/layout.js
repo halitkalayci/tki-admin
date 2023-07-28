@@ -3,7 +3,7 @@ import Head from 'next/head'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { classNames, DomHandler } from 'primereact/utils';
-import { LayoutContext, LayoutProvider } from './contexts/layoutcontext';
+import { LayoutContext, LayoutProvider } from './contexts/LayoutContext';
 import { useContext } from 'react';
 import MainLayout from './components/MainLayout';
 import 'primereact/resources/primereact.css';
@@ -11,6 +11,8 @@ import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import '../styles/layout/layout.scss';
 import '../styles/demo/Demos.scss';
+import { AuthProvider } from './contexts/AuthContext';
+import { MenuProvider } from './contexts/MenuContext';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,7 +41,11 @@ export default function RootLayout({ children }) {
         <link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
       </Head>
       <LayoutProvider>
-        <MainLayout></MainLayout>
+        <MenuProvider>
+          <AuthProvider>
+            <MainLayout></MainLayout>
+          </AuthProvider>
+        </MenuProvider>
       </LayoutProvider>
     </html>
   )

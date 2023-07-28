@@ -1,8 +1,9 @@
 "use client";
 import {classNames} from "primereact/utils";
 import React, {useContext, useRef} from "react";
-import {LayoutContext} from "../contexts/layoutcontext";
+import {LayoutContext} from "../contexts/LayoutContext";
 import AppTopBar from "./TopBar/AppTopBar";
+import AppSidebar from "./SideBar/Sidebar";
 
 function MainLayout(props) {
 	const {layoutConfig, layoutState, setLayoutState} = useContext(LayoutContext);
@@ -26,7 +27,7 @@ function MainLayout(props) {
 		<div className={containerClass}>
 			<AppTopBar ref={topbarRef} />
 			<div ref={sidebarRef} className="layout-sidebar">
-				{/* <AppSidebar /> */}
+				<AppSidebar />
 			</div>
 			<div className="layout-main-container">
 				<div className="layout-main">{props.children}</div>
