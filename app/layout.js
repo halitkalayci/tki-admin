@@ -7,7 +7,9 @@ import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import '../styles/layout/layout.scss';
 import '../styles/demo/Demos.scss';
+import '../public/themes/lara-light-indigo/theme.css'
 import './globals.css'
+
 import { LayoutProvider } from './contexts/LayoutContext';
 
 const inter = Inter({ subsets: ['latin'] })

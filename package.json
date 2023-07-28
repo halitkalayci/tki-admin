@@ -13,6 +13,7 @@
     "chart.js": "4.2.1",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
+    "formik": "^2.4.2",
     "jwt-decode": "^3.1.2",
     "next": "13.4.12",
     "primeflex": "^3.3.0",
@@ -21,6 +22,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-transition-group": "^4.4.5",
-    "sass": "^1.64.1"
+    "sass": "^1.64.1",
+    "yup": "^1.2.0"
   }
 }

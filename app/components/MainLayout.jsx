@@ -164,11 +164,6 @@ const Layout = props => {
 				></meta>
 				<meta property="og:ttl" content="604800"></meta>
 				<link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
-				<link
-					id="theme-css"
-					href={`/public/themes/lara-light-blue/theme.css`}
-					rel="stylesheet"
-				></link>
 			</Head>
 			<AuthProvider>
 				<div className={containerClass}>
@@ -180,7 +175,11 @@ const Layout = props => {
 							</div>
 						</>
 					)}
-					<div className="layout-main-container">
+					<div
+						className={
+							"layout-main-container " + (!showLayout ? "layoutless-page" : "")
+						}
+					>
 						<div className="layout-main">{props.children}</div>
 						{/* <AppFooter /> */}
 					</div>
