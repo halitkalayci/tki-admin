@@ -44,6 +44,7 @@ function Login() {
             }
             let token = response.data.accessToken.token;
             localStorage.setItem('token', token);
+            localStorage.setItem('rememberMe', checked);
             setShowLayout(true);
             router.push('/');
             authContext.setIsAuthenticated(true);
