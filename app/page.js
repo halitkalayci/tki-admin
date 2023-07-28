@@ -1,10 +1,17 @@
+"use client"
 import Image from 'next/image'
 import styles from './page.module.css'
+import { useContext, useEffect } from 'react'
+import { LayoutContext } from './contexts/LayoutContext';
 
 export default function Home() {
+  const layoutContext = useContext(LayoutContext)
+  useEffect(() => {
+    layoutContext.setShowLayout(true);
+  }, []);
   return (
-    <main className={styles.main}>
+    <p>
       Merhaba
-    </main>
+    </p>
   )
 }

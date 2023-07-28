@@ -10,11 +10,13 @@ import { Button } from 'primereact/button';
 import Head from 'next/head';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
+import axiosInstance from '@/app/utilities/axiosInterceptors';
+import { AuthContext } from '@/app/contexts/AuthContext';
 function Login() {
     // Destructring
     const { layoutConfig, setShowLayout } = useContext(LayoutContext);
     //const layoutContext = useContext(LayoutContext);
-
+    const authContext = useContext(AuthContext);
     useEffect(() => {
         setShowLayout(false);
     })
@@ -29,13 +31,23 @@ function Login() {
         email: '',
         password: ''
     }
-
+    const [setShowEmailPopup, setSetShowEmailPopup] = useState(false);
     const validationSchema = Yup.object().shape({
         email: Yup.string().required(),
         password: Yup.string().required()
     })
     const login = (values) => {
-        console.log(values);
+        axiosInstance.post("Auth", values).then(response => {
+            if (response.data.requiredAuthenticatorType == 1 && response.data.accessToken == null) {
+                setShowEmailPopup(true);
+                return;
+            }
+            let token = response.data.accessToken.token;
+            localStorage.setItem('token', token);
+            setShowLayout(true);
+            router.push('/');
+            authContext.setIsAuthenticated(true);
+        });
     }
 
     return (
@@ -44,7 +56,7 @@ function Login() {
                 <img src={`/layout/images/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`} alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" />
                 <div style={{ borderRadius: '56px', padding: '0', background: 'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)' }}>
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
-                        <Formik onSubmit={(e) => { login(e) }} initialValues={initialValues}>
+                        <Formik validationSchema={validationSchema} onSubmit={(e) => { login(e) }} initialValues={initialValues}>
                             <Form>
                                 <div>
                                     <label htmlFor="email1" className="block text-900 text-xl font-medium mb-2">
@@ -55,7 +67,7 @@ function Login() {
                                     <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
                                         Password
                                     </label>
-                                    <Field name="password" inputid="password1" placeholder="Password" toggleMask className="p-inputtext p-component w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Field>
+                                    <Field name="password" type="password" inputid="password1" placeholder="Password" toggleMask className="p-inputtext p-component w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Field>
 
                                     <div className="flex align-items-center justify-content-between mb-5 gap-5">
                                         <div className="flex align-items-center">
