@@ -10,6 +10,7 @@ import { InputText } from 'primereact/inputtext';
 import { Checkbox } from 'primereact/checkbox';
 import { Calendar } from 'primereact/calendar';
 import { Slider } from "primereact/slider"
+import './carlist.css'
 function ListUsers() {
     const [users, setUsers] = useState([])
     const [selectedRoles, setSelectedRoles] = useState(null);
@@ -91,8 +92,30 @@ function ListUsers() {
         return <Checkbox checked={opt.value} onChange={(e) => { opt.editorCallback(e.checked) }}></Checkbox>
     }
 
+    const exportColumns = ["id", "firstName", "lastName", "email"].map((col) => {
+        return { title: col, dataKey: col }
+    });
+
+    const exportPdf = () => {
+        import('jspdf').then(jsPDF => {
+            import('jspdf-autotable').then(() => {
+                console.log(users);
+                const doc = new jsPDF.default(0, 0);
+                doc.autoTable(exportColumns, users);
+                doc.save('users.pdf');
+            })
+        })
+    }
+
     const headerBody = () => {
-        return <InputText placeholder='Search..' type="text" value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)}></InputText>
+        return <div className='d-flex justify-content-between align-items-between'>
+            <InputText placeholder='Search..' type="text" value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)}></InputText>
+            <div className='buttons'>
+                <Button onClick={exportPdf} severity='info' label='PDF'></Button>
+                <Button severity='danger' label='Excel'></Button>
+                <Button severity='success' label='CSV'></Button>
+            </div>
+        </div>
     }
 
     const dateFilter = (options) => {
@@ -113,14 +136,14 @@ function ListUsers() {
     // rows'a eşit olmalı
     return (
         <>{users.length > 0 && <DataTable rowsPerPageOptions={[5, 15, 20, 30, 100]} globalFilter={globalFilter} header={headerBody} globalFilterFields={["firstName", "lastName", "email", "roles"]} paginator rows={5} totalRecords={users.length} editMode='row' onRowEditInit={rowEditInit} onRowEditComplete={(e) => updateUser(e)} value={users} tableStyle={{ minWidth: '50rem' }}>
-            <Column filter filterElement={rangeSelector} showFilterMenuOptions={false} sortable field="id" header="ID"></Column>
+            <Column showFilterMenuOptions={false} sortable field="id" header="ID"></Column>
             <Column filter showFilterMatchModes={true} showFilterMenuOptions={true} showFilterOperator={false} sortable editor={textEditor} field="firstName" header="First Name"></Column>
             <Column filter showFilterOperator={false} editor={textEditor} field="lastName" header="Last Name"></Column>
-            <Column filterElement={dateFilter} filter filterField="date" dataType='date' body={dateColumn} field="date" header="Kayıt Tarihi"></Column>
-            <Column editor={textEditor} field="email" header="Email"></Column>
+            {/* <Column filterElement={dateFilter} filter filterField="date" dataType='date' body={dateColumn} field="date" header="Kayıt Tarihi"></Column> */}
+            <Column filter editor={textEditor} field="email" header="Email"></Column>
             <Column editor={textEditor} field='password' body={filteredColumnBody} header="Password"></Column>
             <Column editor={checkBoxEditor} field='status' body={statusBody} header="Aktif"></Column>
-            <Column editor={rolesEditor} body={rolesRowBody} field="roles" header="Roller">
+            <Column filter editor={rolesEditor} body={rolesRowBody} field="roles" header="Roller">
             </Column>
             <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
         </DataTable>}
