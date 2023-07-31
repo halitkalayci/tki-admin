@@ -69,12 +69,17 @@ function ListUsers() {
         })
     }
 
+    const filteredColumnBody = (e) => {
+        return <div>*******</div>
+    }
+
     return (
         <DataTable editMode='row' onRowEditInit={rowEditInit} onRowEditComplete={(e) => updateUser(e)} value={users} tableStyle={{ minWidth: '50rem' }}>
             <Column field="id" header="ID"></Column>
             <Column editor={textEditor} field="firstName" header="First Name"></Column>
             <Column editor={textEditor} field="lastName" header="Last Name"></Column>
             <Column editor={textEditor} field="email" header="Email"></Column>
+            <Column editor={textEditor} field='password' body={filteredColumnBody} header="Password"></Column>
             <Column editor={rolesEditor} body={rolesRowBody} field="roles" header="Roller">
             </Column>
             <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
