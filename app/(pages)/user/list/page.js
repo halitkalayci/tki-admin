@@ -107,12 +107,46 @@ function ListUsers() {
         })
     }
 
+    const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            let userData = users.map(user => {
+                return {
+                    ID: user.id,
+                    Ad: user.firstName,
+                    "Soy adı": user.lastName,
+                    "Üyelik Durumu": user.status ? "AKTİF" : "PASİF",
+                    "Sicil Durumu": "Temiz"
+                }
+            })
+            const worksheet = xlsx.utils.json_to_sheet(userData);
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array'
+            });
+
+            saveAsExcelFile(excelBuffer, 'users');
+        });
+    }
+
+    const saveAsExcelFile = (bytes, name) => {
+        import('file-saver').then(saver => {
+            let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+            let EXCEL_EXTENSION = '.xlsx';
+            const data = new Blob([bytes], {
+                type: EXCEL_TYPE
+            });
+
+            saver.default.saveAs(data, name + "_" + new Date().toISOString() + EXCEL_EXTENSION);
+        })
+    }
+
     const headerBody = () => {
         return <div className='d-flex justify-content-between align-items-between'>
             <InputText placeholder='Search..' type="text" value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)}></InputText>
             <div className='buttons'>
                 <Button onClick={exportPdf} severity='info' label='PDF'></Button>
-                <Button severity='danger' label='Excel'></Button>
+                <Button onClick={exportExcel} severity='danger' label='Excel'></Button>
                 <Button severity='success' label='CSV'></Button>
             </div>
         </div>
