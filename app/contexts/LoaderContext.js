@@ -1,10 +1,18 @@
 "use client"
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const LoaderContext = createContext();
 
 export const LoaderProvider = (props) => {
     const [requestCount, setRequestCount] = useState(0)
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        if (requestCount > 0)
+            setIsLoading(true)
+        else
+            setIsLoading(false)
+    }, [requestCount])
 
     const requestStart = () => {
         setRequestCount(requestCount + 1)
@@ -16,7 +24,7 @@ export const LoaderProvider = (props) => {
     }
 
     return <LoaderContext.Provider value={{ requestStart, requestEnd }}>
-        {requestCount > 0 && <div className="overlay">
+        {isLoading && <div className="overlay">
             <div className="overlay__inner">
                 <div className="overlay__content"><span className="spinner"></span></div>
             </div>

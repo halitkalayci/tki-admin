@@ -18,6 +18,9 @@ export default function Subscriber() {
 		window.addEventListener("redirectToLogin", () => {
 			navigation.push("/login");
 		});
+		window.addEventListener("redirectUser", e => {
+			navigation.push(e.detail.url);
+		});
 		window.addEventListener("requestStart", () => {
 			loaderContext.requestStart();
 		});

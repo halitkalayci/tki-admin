@@ -85,6 +85,7 @@ axiosInstance.interceptors.response.use(
                     return axiosInstance(originalRequest);
                 }
                 window.dispatchEvent(new CustomEvent('toastr', { detail: { severity: 'error', summary: 'HATA', detail: 'Yetkiniz bulunmamaktadır.' } }));
+                window.dispatchEvent(new CustomEvent("redirectUser", { detail: { url: '/' } }))
                 //window.dispatchEvent(new Event("redirectToLogin"))
                 break;
             default:

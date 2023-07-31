@@ -148,7 +148,7 @@
     height: 100%;
     position: fixed;
     background: #222;
-    z-index: 999;
+    z-index: 9999999;
   }
   
   .overlay__inner {
@@ -182,4 +182,11 @@
   100% {
     transform: rotate(360deg);
   }
+  }
+
+  .text-success{
+    color:green;
+  }
+  .text-danger{
+    color:red;
   }

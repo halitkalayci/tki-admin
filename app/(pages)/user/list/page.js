@@ -7,6 +7,7 @@ import { Button } from 'primereact/button';
 import { MultiSelect } from 'primereact/multiselect';
 import { Field } from 'formik';
 import { InputText } from 'primereact/inputtext';
+import { Checkbox } from 'primereact/checkbox';
 function ListUsers() {
     const [users, setUsers] = useState([])
     const [selectedRoles, setSelectedRoles] = useState(null);
@@ -72,18 +73,29 @@ function ListUsers() {
     const filteredColumnBody = (e) => {
         return <div>*******</div>
     }
+    const statusBody = (e) => {
+        if (e.status)
+            return <i className="pi pi-check text-success"></i>
+        return <i className="pi pi-times text-danger"></i>
+    }
+
+    const checkBoxEditor = (opt) => {
+        return <Checkbox checked={opt.value} onChange={(e) => { opt.editorCallback(e.checked) }}></Checkbox>
+    }
 
     return (
-        <DataTable editMode='row' onRowEditInit={rowEditInit} onRowEditComplete={(e) => updateUser(e)} value={users} tableStyle={{ minWidth: '50rem' }}>
+        <>{users.length > 0 && <DataTable editMode='row' onRowEditInit={rowEditInit} onRowEditComplete={(e) => updateUser(e)} value={users} tableStyle={{ minWidth: '50rem' }}>
             <Column field="id" header="ID"></Column>
             <Column editor={textEditor} field="firstName" header="First Name"></Column>
             <Column editor={textEditor} field="lastName" header="Last Name"></Column>
             <Column editor={textEditor} field="email" header="Email"></Column>
             <Column editor={textEditor} field='password' body={filteredColumnBody} header="Password"></Column>
+            <Column editor={checkBoxEditor} field='status' body={statusBody} header="Aktif"></Column>
             <Column editor={rolesEditor} body={rolesRowBody} field="roles" header="Roller">
             </Column>
             <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
-        </DataTable>
+        </DataTable>}
+        </>
     )
 }
 
