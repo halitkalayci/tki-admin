@@ -13,6 +13,8 @@ import './globals.css'
 import { LayoutProvider } from './contexts/LayoutContext';
 import { LoaderProvider } from './contexts/LoaderContext';
 import Subscriber from './components/Subscriber/Subscriber';
+import { useEffect } from 'react';
+import { addLocale, locale } from 'primereact/api';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +24,15 @@ export const metadata = {
 }
 
 export default function RootLayout(props) {
+
+
+  useEffect(() => {
+    fetch('/tr.json').then(response => response.json()).then((json) => {
+      console.log(json);
+      addLocale("tr", json);
+      locale("tr");
+    })
+  }, [])
 
   return (
     <html lang="en">

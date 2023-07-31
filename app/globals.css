@@ -190,3 +190,6 @@
   .text-danger{
     color:red;
   }
+  .d-none{
+    display:none;
+  }

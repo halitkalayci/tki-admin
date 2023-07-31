@@ -75,8 +75,10 @@ axiosInstance.interceptors.response.use(
                 }
                 let rememberMe = localStorage.getItem("rememberMe") == "true";
                 let decodedToken = jwt_decode(token);
+                let isTokenExpired = Date.now() >= decodedToken['exp'] * 1000;
                 // Kodun refresh token'a gittiği nokta.
-                if (Date.now() >= decodedToken['exp'] * 1000) {
+                debugger;
+                if (isTokenExpired) {
                     if (rememberMe) {
                         const originalRequest = error.config;
                         originalRequest._retry = true; // axios'a isteği tekrar denemesi
@@ -88,9 +90,13 @@ axiosInstance.interceptors.response.use(
                     }
                     window.dispatchEvent(new CustomEvent('toastr', { detail: { severity: 'info', summary: 'Bilgi', detail: 'Oturumunuzun süresi bitmiştir. Lütfen tekrar giriş yapınız.' } }));
                     window.dispatchEvent(new Event("redirectToLogin"))
+                    localStorage.removeItem("rememberMe")
+                    localStorage.removeItem("token")
                 }
-                window.dispatchEvent(new CustomEvent('toastr', { detail: { severity: 'error', summary: 'HATA', detail: 'Yetkiniz bulunmamaktadır.' } }));
-                window.dispatchEvent(new CustomEvent("redirectUser", { detail: { url: '/' } }))
+                else {
+                    window.dispatchEvent(new CustomEvent('toastr', { detail: { severity: 'error', summary: 'HATA', detail: 'Yetkiniz bulunmamaktadır.' } }));
+                    window.dispatchEvent(new CustomEvent("redirectUser", { detail: { url: '/' } }))
+                }
                 break;
             default:
                 alert('Bilinmedik Hata');
