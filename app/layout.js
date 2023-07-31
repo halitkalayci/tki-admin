@@ -11,6 +11,8 @@ import '../public/themes/lara-light-indigo/theme.css'
 import './globals.css'
 
 import { LayoutProvider } from './contexts/LayoutContext';
+import { LoaderProvider } from './contexts/LoaderContext';
+import Subscriber from './components/Subscriber/Subscriber';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,9 +41,12 @@ export default function RootLayout(props) {
       </Head>
       <body>
         <LayoutProvider>
-          <MainLayout>
-            {props.children}
-          </MainLayout>
+          <LoaderProvider>
+            <MainLayout>
+              <Subscriber></Subscriber>
+              {props.children}
+            </MainLayout>
+          </LoaderProvider>
         </LayoutProvider>
       </body>
     </html>
