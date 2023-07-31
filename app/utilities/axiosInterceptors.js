@@ -68,21 +68,26 @@ axiosInstance.interceptors.response.use(
                 // token olmadığı => hiç login olmamış olması ❌❌
                 // token var, süresi geçmiş, yenilediğim halde 401 => ❌❌
                 // token var, süresi geçmiş, yapılmak istenen işleme yetki var => ✔️
-                debugger;
                 let token = localStorage.getItem('token');
                 if (!token) {
                     window.dispatchEvent(new Event('redirectToLogin'));
                     break;
                 }
+                let rememberMe = localStorage.getItem("rememberMe") == "true";
                 let decodedToken = jwt_decode(token);
+                // Kodun refresh token'a gittiği nokta.
                 if (Date.now() >= decodedToken['exp'] * 1000) {
-                    const originalRequest = error.config;
-                    originalRequest._retry = true; // axios'a isteği tekrar denemesi
-                    let response = await axiosInstance.post('Auth/refresh-token');
-                    let token = response.data.token;
-                    localStorage.setItem('token', token); // localStorage
-                    originalRequest.headers.Authorization = 'Bearer ' + token;
-                    return axiosInstance(originalRequest);
+                    if (rememberMe) {
+                        const originalRequest = error.config;
+                        originalRequest._retry = true; // axios'a isteği tekrar denemesi
+                        let response = await axiosInstance.post('Auth/refresh-token');
+                        let token = response.data.token;
+                        localStorage.setItem('token', token); // localStorage
+                        originalRequest.headers.Authorization = 'Bearer ' + token;
+                        return axiosInstance(originalRequest);
+                    }
+                    window.dispatchEvent(new CustomEvent('toastr', { detail: { severity: 'info', summary: 'Bilgi', detail: 'Oturumunuzun süresi bitmiştir. Lütfen tekrar giriş yapınız.' } }));
+                    window.dispatchEvent(new Event("redirectToLogin"))
                 }
                 window.dispatchEvent(new CustomEvent('toastr', { detail: { severity: 'error', summary: 'HATA', detail: 'Yetkiniz bulunmamaktadır.' } }));
                 window.dispatchEvent(new CustomEvent("redirectUser", { detail: { url: '/' } }))
