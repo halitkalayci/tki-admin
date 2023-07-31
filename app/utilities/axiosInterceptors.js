@@ -91,14 +91,11 @@ axiosInstance.interceptors.response.use(
                 }
                 window.dispatchEvent(new CustomEvent('toastr', { detail: { severity: 'error', summary: 'HATA', detail: 'Yetkiniz bulunmamaktadır.' } }));
                 window.dispatchEvent(new CustomEvent("redirectUser", { detail: { url: '/' } }))
-                //window.dispatchEvent(new Event("redirectToLogin"))
                 break;
             default:
                 alert('Bilinmedik Hata');
                 break;
         }
-
-        console.log(error);
         return Promise.reject(error);
     }
 );

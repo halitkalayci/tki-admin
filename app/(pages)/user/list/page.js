@@ -12,6 +12,7 @@ function ListUsers() {
     const [users, setUsers] = useState([])
     const [selectedRoles, setSelectedRoles] = useState(null);
     const [roles, setRoles] = useState([])
+    const [globalFilter, setGlobalFilter] = useState("")
 
     useEffect(() => {
         fetchUsersFromDb();
@@ -83,8 +84,12 @@ function ListUsers() {
         return <Checkbox checked={opt.value} onChange={(e) => { opt.editorCallback(e.checked) }}></Checkbox>
     }
 
+    const headerBody = () => {
+        return <InputText type="text" value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)}></InputText>
+    }
+
     return (
-        <>{users.length > 0 && <DataTable editMode='row' onRowEditInit={rowEditInit} onRowEditComplete={(e) => updateUser(e)} value={users} tableStyle={{ minWidth: '50rem' }}>
+        <>{users.length > 0 && <DataTable globalFilter={globalFilter} header={headerBody} globalFilterFields={["firstName", "lastName", "email", "roles"]} paginator rows={5} totalRecords={users.length} editMode='row' onRowEditInit={rowEditInit} onRowEditComplete={(e) => updateUser(e)} value={users} tableStyle={{ minWidth: '50rem' }}>
             <Column field="id" header="ID"></Column>
             <Column editor={textEditor} field="firstName" header="First Name"></Column>
             <Column editor={textEditor} field="lastName" header="Last Name"></Column>
