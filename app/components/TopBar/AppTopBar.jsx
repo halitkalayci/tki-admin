@@ -1,3 +1,5 @@
+import {ClaimNames} from "@/app/constants/claimNames";
+import {AuthContext} from "@/app/contexts/AuthContext";
 import {LayoutContext} from "@/app/contexts/LayoutContext";
 import Link from "next/link";
 import Router, {useRouter} from "next/navigation";
@@ -5,8 +7,10 @@ import {classNames} from "primereact/utils";
 import React, {
 	forwardRef,
 	useContext,
+	useEffect,
 	useImperativeHandle,
 	useRef,
+	useState,
 } from "react";
 
 const AppTopbar = forwardRef((props, ref) => {
@@ -15,26 +19,28 @@ const AppTopbar = forwardRef((props, ref) => {
 	const menubuttonRef = useRef(null);
 	const topbarmenuRef = useRef(null);
 	const topbarmenubuttonRef = useRef(null);
-
+	const authContext = useContext(AuthContext);
+	const [userInfo, setUserInfo] = useState({});
 	useImperativeHandle(ref, () => ({
 		menubutton: menubuttonRef.current,
 		topbarmenu: topbarmenuRef.current,
 		topbarmenubutton: topbarmenubuttonRef.current,
 	}));
-
+	useEffect(() => {
+		setUserInfo(authContext.getDecodedToken());
+	}, []);
 	return (
 		<div className="layout-topbar">
 			<Link href="/" className="layout-topbar-logo">
 				<img
-					src={`/layout/images/logo-${
-						layoutConfig.colorScheme !== "light" ? "white" : "dark"
-					}.svg`}
+					src={`/logo.svg`}
 					width="47.22px"
 					height={"35px"}
 					widt={"true"}
 					alt="logo"
 				/>
-				<span>SAKAI</span>
+				<span>TKI Panel</span>
+				{/* <span>{userInfo[ClaimNames.NAME]}</span> */}
 			</Link>
 
 			<button

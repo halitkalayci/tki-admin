@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import axiosInstance from '@/app/utilities/axiosInterceptors';
@@ -147,7 +147,7 @@ function ListUsers() {
             <div className='buttons'>
                 <Button onClick={exportPdf} severity='info' label='PDF'></Button>
                 <Button onClick={exportExcel} severity='danger' label='Excel'></Button>
-                <Button severity='success' label='CSV'></Button>
+                <Button onClick={exportCsv} severity='success' label='CSV'></Button>
             </div>
         </div>
     }
@@ -166,10 +166,15 @@ function ListUsers() {
         </>
     }
 
+    const dataTableRef = useRef();
+
+    const exportCsv = () => {
+        dataTableRef.current.exportCSV();
+    }
     // rowsPerPageOptions'ın ilk alanı = [5,10,20,30]
     // rows'a eşit olmalı
     return (
-        <>{users.length > 0 && <DataTable rowsPerPageOptions={[5, 15, 20, 30, 100]} globalFilter={globalFilter} header={headerBody} globalFilterFields={["firstName", "lastName", "email", "roles"]} paginator rows={5} totalRecords={users.length} editMode='row' onRowEditInit={rowEditInit} onRowEditComplete={(e) => updateUser(e)} value={users} tableStyle={{ minWidth: '50rem' }}>
+        <>{users.length > 0 && <DataTable ref={dataTableRef} rowsPerPageOptions={[5, 15, 20, 30, 100]} globalFilter={globalFilter} header={headerBody} globalFilterFields={["firstName", "lastName", "email", "roles"]} paginator rows={5} totalRecords={users.length} editMode='row' onRowEditInit={rowEditInit} onRowEditComplete={(e) => updateUser(e)} value={users} tableStyle={{ minWidth: '50rem' }}>
             <Column showFilterMenuOptions={false} sortable field="id" header="ID"></Column>
             <Column filter showFilterMatchModes={true} showFilterMenuOptions={true} showFilterOperator={false} sortable editor={textEditor} field="firstName" header="First Name"></Column>
             <Column filter showFilterOperator={false} editor={textEditor} field="lastName" header="Last Name"></Column>
