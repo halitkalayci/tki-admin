@@ -3,24 +3,24 @@ import React, {useState} from "react";
 import {FileUpload} from "primereact/fileupload";
 import {InputText} from "primereact/inputtext";
 import axiosInstance from "@/app/utilities/axiosInterceptors";
-
+import {Editor} from "primereact/editor";
 function CreateFile() {
 	const [desc, setDesc] = useState("");
-
+	const [htmlContent, setHtmlContent] = useState("");
 	const handleUpload = async event => {
 		console.log(event);
+		console.log(htmlContent);
+		// let request = new FormData();
+		// request.append("description", desc);
+		// event.files.forEach(file => {
+		// 	request.append("files", file);
+		// });
 
-		let request = new FormData();
-		request.append("description", desc);
-		event.files.forEach(file => {
-			request.append("files", file);
-		});
+		// console.log(request);
 
-		console.log(request);
-
-		axiosInstance.post("FileUploads", request).then(response => {
-			console.log(response);
-		});
+		// axiosInstance.post("FileUploads", request).then(response => {
+		// 	console.log(response);
+		// });
 	};
 
 	return (
@@ -52,6 +52,14 @@ function CreateFile() {
 								onChange={e => setDesc(e.target.value)}
 								className="p-inputtext p-component"
 								type="text"
+							/>
+						</div>
+						<div className="field col-12 md:col-12">
+							<label>HTML İçerik</label>
+							<Editor
+								value={htmlContent}
+								onTextChange={e => setHtmlContent(e.htmlValue)}
+								style={{height: "300px"}}
 							/>
 						</div>
 					</div>
